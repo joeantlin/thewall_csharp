@@ -1,0 +1,42 @@
+﻿@model FormContent
+
+<h1>CodingDojo Wall</h1>
+
+<h2>Hello @ViewBag.ThisUser.FirstName</h2>
+
+<a href="/logout">Logout</a>
+
+<form asp-action="AddMessage" asp-controller="Home" method="POST">
+    <label>
+        Post a Message
+        <span asp-validation-for="Content"></span>
+        <textarea asp-for="Content"></textarea>
+    </label>
+    <button>Submit</button>
+</form>
+
+<div>
+    <hr>
+    @foreach(Message i in ViewBag.AllMessages)
+    {
+        <div class="Message">
+            <p>@i.User.FirstName @i.User.LastName on @i.User.CreatedAt</p>
+            <p>@i.Content</p>
+            <div style="margin-left: 20px;">
+                @foreach(Comment j in i.MessageComments)
+                {
+                    <p>@j.Content</p>
+                }
+                <form asp-action="AddComment" asp-controller="Home" asp-route-mId="@i.Id" method="POST">
+                    <label>
+                        Post a Comment
+                        <span asp-validation-for="Content"></span>
+                        <textarea asp-for="Content"></textarea>
+                    </label>
+                    <button>Submit</button>
+                </form>
+            </div>
+            <hr>
+        </div>
+    }
+</div>
